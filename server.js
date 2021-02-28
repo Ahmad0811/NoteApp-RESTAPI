@@ -15,7 +15,7 @@ const app = express();
 // Body parser
 app.use(express.json());
 
-app.get('/api/', async (req, res) => {
+app.get('/', async (req, res) => {
 	try {
 		const note = await Note.find();
 		res.json({
@@ -32,7 +32,7 @@ app.get('/api/', async (req, res) => {
 	}
 });
 
-app.get('/api/:id', async (req, res) => {
+app.get('/:id', async (req, res) => {
 	try {
 		const note = await Note.findById(req.params.id);
 
@@ -56,7 +56,7 @@ app.get('/api/:id', async (req, res) => {
 	}
 });
 
-app.post('/api/', async (req, res) => {
+app.post('/', async (req, res) => {
 	try {
 		const note = await Note.create(req.body);
 
@@ -73,7 +73,7 @@ app.post('/api/', async (req, res) => {
 	}
 });
 
-app.put('/api/:id', async (req, res) => {
+app.put('/:id', async (req, res) => {
 	try {
 		const note = await Note.findByIdAndUpdate(req.params.id, req.body, {
 			new: true,
@@ -100,7 +100,7 @@ app.put('/api/:id', async (req, res) => {
 	}
 });
 
-app.delete('/api/:id', async (req, res) => {
+app.delete('/:id', async (req, res) => {
 	try {
 		const note = await Note.findByIdAndDelete(req.params.id);
 
