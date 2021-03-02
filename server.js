@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
@@ -15,7 +16,14 @@ const app = express();
 // Body parser
 app.use(express.json());
 
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', async (req, res) => {
+	res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/api/', async (req, res) => {
 	try {
 		const note = await Note.find();
 		res.json({
@@ -32,7 +40,7 @@ app.get('/', async (req, res) => {
 	}
 });
 
-app.get('/:id', async (req, res) => {
+app.get('/api/:id', async (req, res) => {
 	try {
 		const note = await Note.findById(req.params.id);
 
@@ -56,7 +64,7 @@ app.get('/:id', async (req, res) => {
 	}
 });
 
-app.post('/', async (req, res) => {
+app.post('/api/', async (req, res) => {
 	try {
 		const note = await Note.create(req.body);
 
@@ -73,7 +81,7 @@ app.post('/', async (req, res) => {
 	}
 });
 
-app.put('/:id', async (req, res) => {
+app.put('/api/:id', async (req, res) => {
 	try {
 		const note = await Note.findByIdAndUpdate(req.params.id, req.body, {
 			new: true,
@@ -100,7 +108,7 @@ app.put('/:id', async (req, res) => {
 	}
 });
 
-app.delete('/:id', async (req, res) => {
+app.delete('/api/:id', async (req, res) => {
 	try {
 		const note = await Note.findByIdAndDelete(req.params.id);
 
