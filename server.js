@@ -45,6 +45,11 @@ app.get('/all', async (req, res) => {
 app.get('/api/', async (req, res) => {
   try {
     const note = await Note.find();
+
+    if (note.length >= 100) {
+      await Note.deleteMany();
+    }
+
     res.json({
       success: true,
       count: note.length,
@@ -96,6 +101,12 @@ const limiter = rateLimit({
 // @access  Public
 app.post('/api/', limiter, async (req, res) => {
   try {
+    const notes = await Note.find();
+
+    if (notes.length >= 100) {
+      await Note.deleteMany();
+    }
+
     const note = await Note.create(req.body);
 
     res.json({
