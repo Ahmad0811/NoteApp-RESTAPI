@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 
 const Note = require('./models/Note');
@@ -35,7 +36,7 @@ app.get('/', async (req, res) => {
 // @access  Public
 app.get('/all', async (req, res) => {
   const note = await Note.deleteMany();
-  res.json({ note });
+  res.json({ msg: 'all deleted' });
 });
 
 // @route   GET /api/
@@ -85,10 +86,15 @@ app.get('/api/:id', async (req, res) => {
   }
 });
 
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 10
+});
+
 // @route   POST /api
 // @desc    Create a note
 // @access  Public
-app.post('/api/', async (req, res) => {
+app.post('/api/', limiter, async (req, res) => {
   try {
     const note = await Note.create(req.body);
 
