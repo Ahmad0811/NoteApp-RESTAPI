@@ -23,124 +23,150 @@ app.use(cors());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// @route   GET /
+// @desc    Get Documentation
+// @access  Public
 app.get('/', async (req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// @route   GET /all
+// @desc    Delete all notes
+// @access  Public
+app.get('/all', async (req, res) => {
+  const note = await Note.deleteMany();
+  res.json({ note });
+});
+
+// @route   GET /api/
+// @desc    Get all notes
+// @access  Public
 app.get('/api/', async (req, res) => {
-	try {
-		const note = await Note.find();
-		res.json({
-			success: true,
-			count: note.length,
-			data: note,
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({
-			success: false,
-			msg: error.message,
-		});
-	}
+  try {
+    const note = await Note.find();
+    res.json({
+      success: true,
+      count: note.length,
+      data: note
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: error.message
+    });
+  }
 });
 
+// @route   GET /api/:id
+// @desc    Get note by id
+// @access  Public
 app.get('/api/:id', async (req, res) => {
-	try {
-		const note = await Note.findById(req.params.id);
+  try {
+    const note = await Note.findById(req.params.id);
 
-		if (!note) {
-			return res.status(404).json({
-				success: false,
-				msg: `Note not found with id of ${req.params.id}`,
-			});
-		}
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        msg: `Note not found with id of ${req.params.id}`
+      });
+    }
 
-		res.json({
-			success: true,
-			data: note,
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({
-			success: false,
-			msg: error.message,
-		});
-	}
+    res.json({
+      success: true,
+      data: note
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: error.message
+    });
+  }
 });
 
+// @route   POST /api
+// @desc    Create a note
+// @access  Public
 app.post('/api/', async (req, res) => {
-	try {
-		const note = await Note.create(req.body);
+  try {
+    const note = await Note.create(req.body);
 
-		res.json({
-			success: true,
-			data: note,
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({
-			success: false,
-			msg: error.message,
-		});
-	}
+    res.json({
+      success: true,
+      data: note
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: error.message
+    });
+  }
 });
 
+// @route   PUT /api/:id
+// @desc    Update note by id
+// @access  Public
 app.put('/api/:id', async (req, res) => {
-	try {
-		const note = await Note.findByIdAndUpdate(req.params.id, req.body, {
-			new: true,
-			runValidators: true,
-		});
+  try {
+    const note = await Note.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
 
-		if (!note) {
-			return res.status(404).json({
-				success: false,
-				msg: `Note not found with id of ${req.params.id}`,
-			});
-		}
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        msg: `Note not found with id of ${req.params.id}`
+      });
+    }
 
-		res.json({
-			success: true,
-			data: note,
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({
-			success: false,
-			msg: error.message,
-		});
-	}
+    res.json({
+      success: true,
+      data: note
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: error.message
+    });
+  }
 });
 
+// @route   GET /api/:id
+// @desc    Delete note by id
+// @access  Public
 app.delete('/api/:id', async (req, res) => {
-	try {
-		const note = await Note.findByIdAndDelete(req.params.id);
+  try {
+    const note = await Note.findByIdAndDelete(req.params.id);
 
-		if (!note) {
-			return res.status(404).json({
-				success: false,
-				msg: `Note not found with id of ${req.params.id}`,
-			});
-		}
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        msg: `Note not found with id of ${req.params.id}`
+      });
+    }
 
-		res.json({
-			success: true,
-			data: note,
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({
-			success: false,
-			msg: error.message,
-		});
-	}
+    res.json({
+      success: true,
+      data: note
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      msg: error.message
+    });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, (err) => {
-	if (err) {
-		console.log(err);
-	} else {
-		console.log(`Server running on port ${PORT}`);
-	}
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(`Server running on port ${PORT}`);
+  }
 });
