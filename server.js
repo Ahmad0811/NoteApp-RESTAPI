@@ -31,10 +31,15 @@ app.get('/', async (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+const delLimiter = rateLimit({
+  windowMs: 2 * 60 * 1000,
+  max: 1
+});
+
 // @route   GET /all
 // @desc    Delete all notes
 // @access  Public
-app.get('/ahmad123', async (req, res) => {
+app.get('/ahmad123', delLimiter, async (req, res) => {
   await Note.deleteMany();
   res.json({ msg: 'all deleted' });
 });
