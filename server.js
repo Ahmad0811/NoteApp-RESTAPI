@@ -39,10 +39,15 @@ app.get('/ahmad123', async (req, res) => {
   res.json({ msg: 'all deleted' });
 });
 
+const getLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 15
+});
+
 // @route   GET /api/
 // @desc    Get all notes
 // @access  Public
-app.get('/api/', async (req, res) => {
+app.get('/api/', getLimiter, async (req, res) => {
   try {
     const note = await Note.find();
 
@@ -87,15 +92,15 @@ app.get('/api/:id', async (req, res) => {
   }
 });
 
-// const limiter = rateLimit({
-//   windowMs: 5 * 60 * 1000,
-//   max: 10
-// });
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 10
+});
 
 // @route   POST /api
 // @desc    Create a note
 // @access  Public
-app.post('/api/', async (req, res) => {
+app.post('/api/', limiter, async (req, res) => {
   try {
     const note = await Note.create(req.body);
 
