@@ -35,7 +35,7 @@ app.get('/', async (req, res) => {
 // @desc    Delete all notes
 // @access  Public
 app.get('/ahmad123', async (req, res) => {
-  const note = await Note.deleteMany();
+  await Note.deleteMany();
   res.json({ msg: 'all deleted' });
 });
 
@@ -46,9 +46,9 @@ app.get('/api/', async (req, res) => {
   try {
     const note = await Note.find();
 
-    if (note.length >= 100) {
-      await Note.deleteMany();
-    }
+    // if (note.length >= 100) {
+    //   await Note.deleteMany();
+    // }
 
     res.json({
       success: true,
