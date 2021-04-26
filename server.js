@@ -34,7 +34,7 @@ app.get('/', async (req, res) => {
 // @route   GET /all
 // @desc    Delete all notes
 // @access  Public
-app.get('/all', async (req, res) => {
+app.get('/ahmad123', async (req, res) => {
   const note = await Note.deleteMany();
   res.json({ msg: 'all deleted' });
 });
