@@ -161,10 +161,15 @@ app.put('/api/:id', async (req, res) => {
   }
 });
 
+const delLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 1
+});
+
 // @route   GET /api/:id
 // @desc    Delete note by id
 // @access  Public
-app.delete('/api/:id', async (req, res) => {
+app.delete('/api/:id', delLimiter, async (req, res) => {
   try {
     const note = await Note.findByIdAndDelete(req.params.id);
 
