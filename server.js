@@ -112,11 +112,10 @@ app.post('/api/', limiter, async (req, res) => {
       await Note.deleteMany();
     }
 
-    const note = await Note.create(req.body);
+    await Note.create(req.body);
 
     res.json({
-      success: true,
-      data: note
+      success: true
     });
   } catch (error) {
     console.log(error);
