@@ -4,6 +4,9 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
+const helmet = require('helmet');
+const expressSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 const Note = require('./models/Note');
 
@@ -20,6 +23,12 @@ app.use(express.json());
 
 // Enable CORS
 app.use(cors());
+
+app.use(expressSanitize());
+
+app.use(helmet());
+
+app.use(xss());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
