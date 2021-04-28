@@ -40,19 +40,6 @@ app.get('/', async (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-const delLimiter = rateLimit({
-  windowMs: 2 * 60 * 1000,
-  max: 1
-});
-
-// @route   GET /all
-// @desc    Delete all notes
-// @access  Public
-app.get('/ahmad123', delLimiter, async (req, res) => {
-  await Note.deleteMany();
-  res.json({ msg: 'all deleted' });
-});
-
 const getLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,
   max: 15
@@ -170,15 +157,10 @@ app.put('/api/:id', async (req, res) => {
   }
 });
 
-const delLimiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 1
-});
-
 // @route   GET /api/:id
 // @desc    Delete note by id
 // @access  Public
-app.delete('/api/:id', delLimiter, async (req, res) => {
+app.delete('/api/:id', async (req, res) => {
   try {
     const note = await Note.findByIdAndDelete(req.params.id);
 
